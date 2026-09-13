@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>আমার ব্যক্তিগত হিসাব খাতা - নতুন সংস্করণ</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;background:#0d1117;color:#e6edf3}
+header{background:#071a28;color:#fff;padding:22px 16px;position:sticky;top:0;z-index:5;text-align:center}
+header h1{margin:0;font-family:"Noto Serif Bengali","Noto Sans Bengali",serif;font-size:25px;font-weight:800;letter-spacing:.2px;line-height:1.35}
+header p{margin:7px 0 0;opacity:.82;font-family:"Noto Sans Bengali",sans-serif;font-size:13px;line-height:1.5}
+nav{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:10px;background:#161b22;border-bottom:1px solid #30363d;position:sticky;top:76px;z-index:4}
+nav button{width:100%;min-width:0;border:0;background:#21262d;padding:10px 8px;border-radius:20px;font-weight:600;color:#c9d1d9;font-size:14px}
+nav button.active{background:#1f6feb;color:#fff}
+main{max-width:1000px;margin:auto;padding:16px}.page{display:none}.page.active{display:block}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}.card{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:14px}.card small{color:#8b949e}.card b{display:block;font-size:21px;margin-top:5px;color:#f0f6fc}
+.panel{background:#161b22;border:1px solid #30363d;border-radius:14px;padding:16px;margin-bottom:16px}
+h2{font-size:18px;margin:0 0 14px;color:#f0f6fc}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+label{font-size:13px;font-weight:600;color:#c9d1d9}input,select,textarea{width:100%;margin-top:6px;padding:11px;border:1px solid #30363d;border-radius:9px;font:inherit;background:#0d1117;color:#e6edf3}textarea{min-height:75px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#6e7681}.full{grid-column:1/-1}.actions{margin-top:12px;display:flex;gap:8px}button.primary{border:0;background:#1f6feb;color:#fff;padding:11px 17px;border-radius:9px;font-weight:700;cursor:pointer}button.secondary{border:1px solid #30363d;background:#21262d;color:#c9d1d9;padding:11px 17px;border-radius:9px;cursor:pointer}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{padding:10px 8px;border-bottom:1px solid #30363d;text-align:left;font-size:13px}th{background:#21262d;color:#c9d1d9}
+.inline-edit{margin:0!important;padding:7px!important}.tag{display:inline-block;padding:4px 8px;border-radius:15px;background:#21262d;font-size:12px}.profit{color:#3fb950;font-weight:700}.loss{color:#f85149;font-weight:700}.empty{text-align:center;color:#8b949e;padding:25px}
+@media(max-width:700px){
+.cards{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+header{position:relative}
+nav{top:0}
+.panel{padding:13px}
+
+/* মোবাইলে লোন/ধারের টেবিলকে কার্ডে দেখানো */
+#loan .table-wrap{overflow:visible}
+#loan table{min-width:0;width:100%;border-collapse:separate;border-spacing:0 10px}
+#loan thead{display:none}
+#loan #loanList tr{display:grid;grid-template-columns:1fr 1fr;gap:0 12px;background:#1b2129;border:1px solid #30363d;border-radius:12px;padding:10px;margin-bottom:10px}
+#loan #loanList td{display:block;border:0;padding:6px 0;min-width:0;overflow-wrap:anywhere}
+#loan #loanList td:nth-child(1)::before{content:"তারিখ: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(2)::before{content:"ধরন: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(3)::before{content:"নাম: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(4)::before{content:"মোট: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(5)::before{content:"পরিশোধ: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(6)::before{content:"বাকি: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(7)::before{content:"নোট: ";color:#8b949e;font-weight:600}
+#loan #loanList td:nth-child(7){grid-column:1/-1}
+#loan #loanList td:nth-child(8){grid-column:1/-1;display:flex;gap:8px;padding-top:9px;border-top:1px solid #30363d;margin-top:5px}
+#loan #loanList td:nth-child(8) button{flex:1;margin:0}
+}
+@media(max-width:700px){
+nav{grid-template-columns:repeat(3,1fr);gap:7px;padding:9px}
+nav button{font-size:12px;padding:10px 4px}
+.cards{grid-template-columns:repeat(2,1fr)}
+.grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+header{position:relative}
+nav{top:0}
+.panel{padding:13px}
+}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="আমার হিসাব খাতা">
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="হিসাব খাতা">
+<style>
+#pwaInstallBar{display:none;margin:12px 0}
+#pwaInstallBtn{width:100%;padding:12px;border:0;border-radius:12px;background:#2563eb;color:#fff;font-weight:800;font-size:15px}
+</style>
+
+</head>
+<body>
+<header><h1>আমার ব্যক্তিগত হিসাব খাতা</h1><p>শুধু আপনার নিজের আয়, ব্যয়, ইনভেস্টমেন্ট, লোন এবং বাড়িতে পাঠানো টাকা</p></header>
+<nav id="nav">
+<button class="active" data-page="home">সারসংক্ষেপ</button>
+<button data-page="money">আয় ও ব্যয়</button>
+<button data-page="invest">ইনভেস্টমেন্ট</button>
+<button data-page="loan">লোন / ধার</button>
+<button data-page="homeMoney">বাড়িতে পাঠানো</button>
+</nav>
+<div id="installBar" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px auto 4px;max-width:900px">
+<button id="installBtn" class="primary" type="button" style="display:none">📲 Install App</button>
+<button id="shortcutBtn" type="button">⭐ Shortcut / Home Screen</button>
+</div>
+<div id="installHelp" style="display:none;max-width:900px;margin:10px auto;padding:14px;border:1px solid #334155;border-radius:14px;background:#111827;color:#e5e7eb;line-height:1.7">
+<b>📲 হিসাব খাতা ফোনে রাখুন</b><br>
+• <b>Install App</b> দেখা গেলে সেটিতে চাপুন।<br>
+• না দেখালে Chrome-এর <b>⋮</b> মেনু → <b>Add to Home screen</b> / <b>Install app</b> নির্বাচন করুন।<br>
+• এই HTML ফাইলটি সরাসরি <b>file://</b> থেকে খুললে PWA Install কাজ নাও করতে পারে; অনলাইনে HTTPS-এ চালালে Install অপশন সবচেয়ে ভালো কাজ করবে।
+</div>
+
+<main>
+<section id="home" class="page active">
+<div class="cards">
+<div class="card"><small>মোট আয়</small><b id="sIncome">৳0</b></div>
+<div class="card"><small>মোট ব্যয়</small><b id="sExpense">৳0</b></div>
+<div class="card"><small>ইনভেস্টমেন্ট লাভ/লস</small><b id="sInvest">৳0</b></div>
+<div class="card"><small>বাড়িতে পাঠানো</small><b id="sHome">৳0</b></div>
+<div class="card"><small>আমি যে লোন নিয়েছি — বাকি</small><b id="sLoanTaken">৳0</b></div>
+<div class="card"><small>আমি যে লোন দিয়েছি — বাকি</small><b id="sLoanGiven">৳0</b></div>
+</div>
+<div class="panel"><h2>আমার হিসাবের সারাংশ</h2><p>এই ওয়েব অ্যাপের তথ্য আপনার এই ব্রাউজারের <b>Local Storage</b>-এ রাখা হয়। অন্য কোনো সার্ভারে পাঠানো হয় না।</p></div>
+</section>
+
+<section id="money" class="page">
+<div class="panel"><h2>আয় / ব্যয় যোগ করুন</h2>
+<form id="moneyForm" class="grid">
+<div><label>তারিখ<input type="date" id="mDate" required></label></div>
+<div><label>ধরন<select id="mType"><option value="income">আয়</option><option value="expense">ব্যয়</option></select></label></div>
+<div><label>বিষয়<input id="mTitle" placeholder="যেমন: বেতন, খাবার, যাতায়াত" required></label></div>
+<div><label>পরিমাণ (৳)<input type="number" id="mAmount" min="0" step="0.01" required></label></div>
+<div class="full"><label>কিছু কথা / নোট<textarea id="mNote" placeholder="ইচ্ছা হলে লিখুন..."></textarea></label></div>
+<div class="full actions"><button class="primary">যোগ করুন</button></div>
+</form></div>
+<div class="panel"><h2>আয় ও ব্যয়ের তালিকা</h2><div class="table-wrap"><table><thead><tr><th>তারিখ</th><th>ধরন</th><th>বিষয়</th><th>পরিমাণ</th><th>নোট</th><th></th></tr></thead><tbody id="moneyList"></tbody></table></div></div>
+</section>
+
+<section id="invest" class="page">
+<div class="panel"><h2>ইনভেস্টমেন্ট যোগ করুন</h2>
+<form id="investForm" class="grid">
+<div><label>তারিখ<input type="date" id="iDate" required></label></div>
+<div><label>কোথায় ইনভেস্ট করেছেন<input id="iTitle" placeholder="যেমন: ব্যবসা/শেয়ার" required></label></div>
+<div><label>ইনভেস্ট করেছেন (৳)<input type="number" id="iAmount" min="0" step="0.01" required></label></div>
+<div><label>ফেরত / বর্তমান মূল্য (৳)<input type="number" id="iReturn" min="0" step="0.01" value="0"></label></div>
+<div class="full"><label>কিছু কথা / নোট<textarea id="iNote" placeholder="কেন ইনভেস্ট করলেন, কী হলো ইত্যাদি..."></textarea></label></div>
+<div class="full actions"><button class="primary">যোগ করুন</button></div>
+</form></div>
+<div class="panel"><h2>ইনভেস্টমেন্ট তালিকা</h2><div class="table-wrap"><table><thead><tr><th>তারিখ</th><th>স্থান</th><th>ইনভেস্ট</th><th>বর্তমান/ফেরত</th><th>লাভ/লস</th><th>নোট</th><th></th></tr></thead><tbody id="investList"></tbody></table></div></div>
+</section>
+
+<section id="loan" class="page">
+<div class="panel"><h2>লোন / ধার যোগ করুন</h2>
+<form id="loanForm" class="grid">
+<div><label>তারিখ<input type="date" id="lDate" required></label></div>
+<div><label>ধরন<select id="lType"><option value="taken">কারও কাছ থেকে নিয়েছি</option><option value="given">কাউকে দিয়েছি</option></select></label></div>
+<div><label>ব্যক্তির নাম<input id="lName" placeholder="নাম" required></label></div>
+<div><label>মোট টাকা (৳)<input type="number" id="lAmount" min="0" step="0.01" required></label></div>
+<div><label>পরিশোধ / ফেরত পাওয়া (৳)<input type="number" id="lPaid" min="0" step="0.01" value="0"></label></div>
+<div class="full"><label>কিছু কথা / নোট<textarea id="lNote" placeholder="কী কারণে, কবে ফেরত হবে ইত্যাদি..."></textarea></label></div>
+<div class="full actions"><button class="primary">যোগ করুন</button></div>
+</form></div>
+<div class="panel"><h2>লোন / ধার তালিকা</h2><div class="table-wrap"><table><thead><tr><th>তারিখ</th><th>ধরন</th><th>নাম</th><th>মোট</th><th>পরিশোধ</th><th>বাকি</th><th>নোট</th><th></th></tr></thead><tbody id="loanList"></tbody></table></div></div>
+</section>
+
+<section id="homeMoney" class="page">
+<div class="cards" style="grid-template-columns:1fr;margin-bottom:16px"><div class="card"><small>🏠 বাড়িতে মোট পাঠানো</small><b id="homeTotal">৳0</b></div></div>
+<div class="panel"><h2>🏠 বাড়িতে পাঠানো টাকার হিসাব</h2>
+<form id="homeForm" class="grid">
+<div><label>তারিখ<input type="date" id="hDate" required></label></div>
+<div><label>কোন মাসের জন্য<input type="month" id="hMonth" required></label></div>
+<div><label>কত টাকা পাঠিয়েছেন (৳)<input type="number" id="hAmount" min="0" step="0.01" required></label></div>
+<div class="full"><label>কিছু কথা / নোট<textarea id="hNote" placeholder="ইচ্ছা হলে লিখুন..."></textarea></label></div>
+<div class="full actions"><button class="primary">যোগ করুন</button></div>
+</form></div>
+<div class="panel"><h2>বাড়িতে পাঠানোর তালিকা</h2><div class="table-wrap"><table><thead><tr><th>তারিখ</th><th>মাস</th><th>পরিমাণ</th><th>নোট</th><th></th></tr></thead><tbody id="homeList"></tbody></table></div></div>
+</section>
+</main>
+
+<script>
+const key='myPersonalLedgerV1';
+let db=JSON.parse(localStorage.getItem(key)||'{"money":[],"invest":[],"loan":[],"home":[]}');
+const save=()=>{localStorage.setItem(key,JSON.stringify(db));render();};
+const today=new Date().toISOString().slice(0,10);
+['mDate','iDate','lDate','hDate'].forEach(id=>document.getElementById(id).value=today);
+const money=()=>db.money.reduce((a,x)=>a+(x.type==='income'?x.amount:-x.amount),0);
+const fmt=n=>'৳'+Number(n||0).toLocaleString('bn-BD',{maximumFractionDigits:2});
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function render(){
+ document.getElementById('sIncome').textContent=fmt(db.money.filter(x=>x.type==='income').reduce((a,x)=>a+x.amount,0));
+ document.getElementById('sExpense').textContent=fmt(db.money.filter(x=>x.type==='expense').reduce((a,x)=>a+x.amount,0));
+ document.getElementById('sInvest').textContent=fmt(db.invest.reduce((a,x)=>a+(x.ret-x.amount),0));
+ const homeTotal=db.home.reduce((a,x)=>a+x.amount,0);
+ document.getElementById('sHome').textContent=fmt(homeTotal);
+ document.getElementById('homeTotal').textContent=fmt(homeTotal);
+ const taken= db.loan.filter(x=>x.type==='taken').reduce((a,x)=>a+(x.amount-x.paid),0);
+ const given= db.loan.filter(x=>x.type==='given').reduce((a,x)=>a+(x.amount-x.paid),0);
+ document.getElementById('sLoanTaken').textContent=fmt(taken);
+ document.getElementById('sLoanGiven').textContent=fmt(given);
+ document.getElementById('moneyList').innerHTML=db.money.length?db.money.slice().reverse().map((x,ri)=>{let i=db.money.length-1-ri;return `<tr><td>${esc(x.date)}</td><td><span class="tag">${x.type==='income'?'আয়':'ব্যয়'}</span></td><td>${esc(x.title)}</td><td class="${x.type==='income'?'profit':''}">${fmt(x.amount)}</td><td>${esc(x.note)}</td><td><button class="secondary" onclick="editAmount('money',${i})">এডিট</button> <button class="secondary" onclick="del('money',${i})">মুছুন</button></td></tr>`}).join(''):'<tr><td colspan="6" class="empty">এখনও কোনো হিসাব নেই</td></tr>';
+ document.getElementById('investList').innerHTML=db.invest.length?db.invest.slice().reverse().map((x,ri)=>{let i=db.invest.length-1-ri,p=x.ret-x.amount;return `<tr><td>${esc(x.date)}</td><td>${esc(x.title)}</td><td>${fmt(x.amount)}</td><td>${fmt(x.ret)} <button class="secondary" onclick="editSecondary('invest',${i},'ret')">এডিট</button></td><td class="${p>=0?'profit':'loss'}">${p>=0?'+':''}${fmt(p)}</td><td>${esc(x.note)}</td><td><button class="secondary" onclick="editAmount('invest',${i})">এডিট</button> <button class="secondary" onclick="del('invest',${i})">মুছুন</button></td></tr>`}).join(''):'<tr><td colspan="7" class="empty">এখনও কোনো ইনভেস্টমেন্ট নেই</td></tr>';
+ document.getElementById('loanList').innerHTML=db.loan.length?db.loan.slice().reverse().map((x,ri)=>{let i=db.loan.length-1-ri,b=x.amount-x.paid;return `<tr><td>${esc(x.date)}</td><td>${x.type==='taken'?'নিয়েছি':'দিয়েছি'}</td><td>${esc(x.name)}</td><td>${fmt(x.amount)}</td><td>${fmt(x.paid)} <button class="secondary" onclick="editSecondary('loan',${i},'paid')">এডিট</button></td><td>${fmt(b)}</td><td>${esc(x.note)}</td><td><button class="secondary" onclick="editAmount('loan',${i})">এডিট</button> <button class="secondary" onclick="del('loan',${i})">মুছুন</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">এখনও কোনো লোন/ধার নেই</td></tr>';
+ document.getElementById('homeList').innerHTML=db.home.length?db.home.slice().reverse().map((x,ri)=>{let i=db.home.length-1-ri;return `<tr><td>${esc(x.date)}</td><td>${esc(x.month)}</td><td>${fmt(x.amount)}</td><td>${esc(x.note)}</td><td><button class="secondary" onclick="editAmount('home',${i})">এডিট</button> <button class="secondary" onclick="del('home',${i})">মুছুন</button></td></tr>`}).join(''):'<tr><td colspan="5" class="empty">এখনও কোনো টাকা পাঠানোর হিসাব নেই</td></tr>';
+}
+function editAmount(type,i){
+ const table=document.getElementById(type==='money'?'moneyList':type==='invest'?'investList':type==='loan'?'loanList':'homeList');
+ const row=table.rows[table.rows.length-1-i];
+ if(!row)return;
+ row.dataset.editing='1';
+ [...row.cells].forEach(c=>c.style.background='#1d2630');
+ const amountCell = type==='money'?row.cells[3]:type==='invest'?row.cells[2]:type==='loan'?row.cells[3]:row.cells[2];
+ const current=db[type][i].amount;
+ amountCell.innerHTML='<input class="inline-edit" type="number" min="0" step="0.01" value="'+current+'" style="width:130px">';
+ const action=row.cells[row.cells.length-1];
+ action.innerHTML=`<button class="primary" onclick="saveInlineEdit('${type}',${i},this)">সেভ</button> <button class="secondary" onclick="render()">বাতিল</button>`;
+}
+function saveInlineEdit(type,i,btn){
+ const row=btn.closest('tr');
+ const input=row.querySelector('.inline-edit');
+ const n=Number(input.value);
+ if(!Number.isFinite(n)||n<0){alert('সঠিক টাকা লিখুন।');return}
+ db[type][i].amount=n;
+ save();
+}
+function editSecondary(type,i,key){
+ const table=document.getElementById(type==='invest'?'investList':'loanList');
+ const row=table.rows[table.rows.length-1-i];
+ if(!row)return;
+ row.dataset.editing='1';
+ [...row.cells].forEach(c=>c.style.background='#1d2630');
+ const cell=key==='ret'?row.cells[3]:row.cells[4];
+ const current=db[type][i][key]||0;
+ cell.innerHTML='<input class="inline-edit" type="number" min="0" step="0.01" value="'+current+'" style="width:130px">';
+ const action=row.cells[row.cells.length-1];
+ action.innerHTML=`<button class="primary" onclick="saveSecondaryEdit('${type}',${i},'${key}',this)">সেভ</button> <button class="secondary" onclick="render()">বাতিল</button>`;
+}
+function saveSecondaryEdit(type,i,key,btn){
+ const row=btn.closest('tr');
+ const input=row.querySelector('.inline-edit');
+ const n=Number(input.value);
+ if(!Number.isFinite(n)||n<0){alert('সঠিক টাকা লিখুন।');return}
+ db[type][i][key]=n;
+ save();
+}
+
+function del(type,i){if(confirm('এই হিসাবটি মুছে ফেলবেন?')){db[type].splice(i,1);save()}}
+document.getElementById('moneyForm').onsubmit=e=>{e.preventDefault();db.money.push({date:mDate.value,type:mType.value,title:mTitle.value,amount:+mAmount.value,note:mNote.value});e.target.reset();mDate.value=today;save()};
+document.getElementById('investForm').onsubmit=e=>{e.preventDefault();db.invest.push({date:iDate.value,title:iTitle.value,amount:+iAmount.value,ret:+iReturn.value,note:iNote.value});e.target.reset();iDate.value=today;iReturn.value=0;save()};
+document.getElementById('loanForm').onsubmit=e=>{e.preventDefault();db.loan.push({date:lDate.value,type:lType.value,name:lName.value,amount:+lAmount.value,paid:+lPaid.value,note:lNote.value});e.target.reset();lDate.value=today;lPaid.value=0;save()};
+document.getElementById('homeForm').onsubmit=e=>{e.preventDefault();db.home.push({date:hDate.value,month:hMonth.value,amount:+hAmount.value,note:hNote.value});e.target.reset();hDate.value=today;save()};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(b.dataset.page).classList.add('active')});
+render();
+
+// Install / shortcut
+let deferredInstallPrompt=null;
+const installBtn=document.getElementById('installBtn');
+const shortcutBtn=document.getElementById('shortcutBtn');
+const installHelp=document.getElementById('installHelp');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;installBtn.style.display='inline-block';});
+installBtn?.addEventListener('click',async()=>{
+  if(!deferredInstallPrompt){installHelp.style.display=installHelp.style.display==='none'?'block':'none';return;}
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt=null; installBtn.style.display='none';
+});
+shortcutBtn?.addEventListener('click',()=>{installHelp.style.display=installHelp.style.display==='none'?'block':'none';});
+window.addEventListener('appinstalled',()=>{installBtn.style.display='none';installHelp.style.display='none';});
+if('serviceWorker' in navigator && location.protocol!=='file:'){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+
+<div id="pwaInstallBar">
+  <button id="pwaInstallBtn">📲 অ্যাপ ইনস্টল করুন</button>
+</div>
+<script>
+(function(){
+  let deferredPrompt = null;
+  const bar = document.getElementById('pwaInstallBar');
+  const btn = document.getElementById('pwaInstallBtn');
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    bar.style.display = 'block';
+  });
+  btn.addEventListener('click', async function(){
+    if(!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    bar.style.display = 'none';
+  });
+  window.addEventListener('appinstalled', function(){
+    bar.style.display = 'none';
+  });
+  if('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+})();
+</script>
+
+</body></html>

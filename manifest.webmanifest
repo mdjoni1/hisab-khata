@@ -1,0 +1,12 @@
+{
+  "name": "আমার ব্যক্তিগত হিসাব খাতা",
+  "short_name": "হিসাব খাতা",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "description": "ব্যক্তিগত আয়, ব্যয়, বিনিয়োগ, লোন ও বাড়িতে পাঠানো টাকার হিসাব।",
+  "lang": "bn",
+  "dir": "ltr",
+  "icons": []
+}
